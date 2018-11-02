@@ -158,7 +158,7 @@ defmodule ExTus.Actions do
 
      if upload_length > ExTus.Config.tus_max_file_size do
        conn
-       |> resp(413, "")
+       |> resp(413, "FILE SIZE FOR UPLOADS CANNOT EXCEED #{ExTus.Config.tus_max_file_size}!")
      else
        file_name =
          (meta["filename"] || "")
@@ -226,10 +226,13 @@ defmodule ExTus.Actions do
 
   def get_upload_location(conn, upload_type, identifier) do
     base_url =
-    case Application.get_env(:extus, :environment) do
-      :prod ->
-        ("https://#{conn.host }")
-      
+    case conn.host do
+      "api.oktalk.com" ->
+        ("https://#{conn.host}")
+
+      "preprod.oktalk.com" ->
+        ("https://#{conn.host}")
+          
       _ ->
         ("https://#{conn.host}:#{conn.port}")
     end
