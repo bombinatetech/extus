@@ -3,20 +3,14 @@
 use Mix.Config
 
 config :extus,
-  storage: ExTus.Storage.Local,
-  base_dir: "upload",
-  expired_after: 24 * 60 * 60 * 1000, #clean uncompleted upload after 1 day
-  clean_interval: 30 * 60 * 1000 # start cleaning job after 30min
-
-# config :extus,
-#   base_dir: "dev",
-#   storage: ExTus.Storage.S3
+  environment: Mix.env(),
+  storage: ExTus.Storage.S3,
+  base_dir: "upload"
 
 config :extus, :s3,
-  asset_host: "https://dsxymfc8fnnz2.cloudfront.net",
-  bucket: "mofiin",
-  virtual_host: true,
-  chunk_size: 5 * 1024 * 1024 * 1000
+  bucket: "ok.talk.channels",
+  virtual_host: false,
+  chunk_size: 5 * 1024 * 1024
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
