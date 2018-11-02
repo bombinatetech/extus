@@ -8,7 +8,7 @@ config :extus,
   base_dir: "upload"
 
 config :extus, :s3,
-  bucket: "ok.talk.channels",
+  bucket: "answers.audio",
   virtual_host: false,
   chunk_size: 5 * 1024 * 1024
 

@@ -51,7 +51,7 @@ defmodule ExTus.Storage.S3 do
         parts = parts ++ [{part_id, etag}]
 
         info = %{info | options: %{parts: parts, current_part: part_id}}
-
+        Logger.info("UPLOADING TUS DATA TO S3: #{inspect({response})}")
         {:ok, info}
       err -> 
         Logger.error("ERROR IN S3 TUS UPLOAD PATCH: #{inspect({err})}")
@@ -106,17 +106,21 @@ defmodule ExTus.Storage.S3 do
   end
 
   defp endpoint(bucket) do
-    "#{bucket}.s3-ap-southeast-1.amazonaws.com"
+    "#{bucket}.#{get_s3_endpoint()}"
   end
 
   defp host(bucket) do
     case virtual_host() do
-      true -> "https://#{bucket}.s3-ap-southeast-1.amazonaws.com"
-      _    -> "https://s3-ap-southeast-1.amazonaws.com/#{bucket}"
+      true -> "https://#{bucket}.#{get_s3_endpoint()}"
+      _    -> "https://#{get_s3_endpoint()}/#{bucket}"
     end
   end
 
   defp asset_host() do
     Application.get_env(:extus, :asset_host, host(bucket()))
+  end
+
+  def get_s3_endpoint() do
+    Application.get_env(:ex_aws, :s3_url)
   end
 end
