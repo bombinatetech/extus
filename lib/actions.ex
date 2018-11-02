@@ -226,11 +226,11 @@ defmodule ExTus.Actions do
 
   def get_upload_location(conn, upload_type, identifier) do
     base_url =
-    case conn.host do
-      "api.oktalk.com" ->
+    case Application.get_env(:extus, :environment) do
+      :prod ->
         ("https://#{conn.host}")
 
-      "preprod.oktalk.com" ->
+      :preprod ->
         ("https://#{conn.host}")
           
       _ ->
