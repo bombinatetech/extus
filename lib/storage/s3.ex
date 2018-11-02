@@ -1,5 +1,6 @@
 defmodule ExTus.Storage.S3 do
   use ExTus.Storage
+  require Logger
   
   def storage_dir() do
     time = DateTime.utc_now
@@ -21,8 +22,12 @@ defmodule ExTus.Storage.S3 do
     %{bucket: "", path: file_path, opts: [], upload_id: nil}
     |> ExAws.S3.Upload.initialize([host: endpoint(bucket())])
     |> case do
-      {:ok, rs} -> {:ok, {rs.upload_id, file_path}}
-      err -> err
+      {:ok, rs} -> 
+        Logger.info("INITIATE TUS S3 UPLOAD: #{inspect({rs})}")
+        {:ok, {rs.upload_id, file_path}}
+      err -> 
+        Logger.error("ERROR IN TUS S3 INIT: #{inspect({err})}")
+        err
     end
   end
 
@@ -48,7 +53,9 @@ defmodule ExTus.Storage.S3 do
         info = %{info | options: %{parts: parts, current_part: part_id}}
 
         {:ok, info}
-      err -> err
+      err -> 
+        Logger.error("ERROR IN S3 TUS UPLOAD PATCH: #{inspect({err})}")
+        err
     end
   end
 
@@ -64,7 +71,7 @@ defmodule ExTus.Storage.S3 do
   end
 
   def url(file) do
-    Path.join asset_host, file
+    Path.join asset_host(), file
   end
 
   def abort_upload(%{identifier: upload_id, filename: file}) do
@@ -103,13 +110,13 @@ defmodule ExTus.Storage.S3 do
   end
 
   defp host(bucket) do
-    case virtual_host do
+    case virtual_host() do
       true -> "https://#{bucket}.s3.amazonaws.com"
       _    -> "https://s3.amazonaws.com/#{bucket}"
     end
   end
 
-  defp asset_host do
+  defp asset_host() do
     Application.get_env(:extus, :asset_host, host(bucket()))
   end
 end
