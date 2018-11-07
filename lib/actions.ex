@@ -6,7 +6,7 @@ defmodule ExTus.Actions do
   require Logger
 
   defp storage() do
-    Application.get_env(:extus, :storage, ExTus.Storage.Local)
+    Application.get_env(:extus, :storage, ExTus.Storage.S3)
   end
 
   def options(conn)do
