@@ -85,7 +85,7 @@ defmodule ExTus.Storage.S3 do
     |> ExAws.S3.delete_object(file)
     |> ExAws.request([host: endpoint(bucket())])
   end
-  
+
   defp base_dir() do
    Application.get_env(:extus, :base_dir)
   end
