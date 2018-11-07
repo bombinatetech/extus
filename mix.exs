@@ -48,7 +48,9 @@ defmodule Extus.Mixfile do
       {:plug, "~> 1.3"},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:ex_aws, "~> 2.0"},
-      {:ex_aws_s3, "~> 2.0"}
+      {:ex_aws_s3, "~> 2.0"},
+      {:poison, "~> 2.0"},
+      {:hackney, "~> 1.6"}
     ]
   end
 end
