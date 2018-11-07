@@ -56,6 +56,7 @@ defmodule ExTus.Actions do
     headers = Utils.read_headers(conn)
     {offset, _} = Integer.parse(headers["upload-offset"])
     upload_info = UploadCache.get(identifier)
+    Logger.info("TUS PATCH REQUEST: #{inspect({identifier})}")
 
     [alg, checksum] = String.split(headers["upload-checksum"] || "_ _")
     if not is_nil(headers["upload-checksum"]) and not alg in ExTus.Config.hash_algorithms do

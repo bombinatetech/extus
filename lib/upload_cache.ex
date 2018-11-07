@@ -50,6 +50,7 @@ defmodule ExTus.UploadCache do
 
  def handle_call({:get, key}, _from, state) do
    rs = :ets.lookup(:upload_cache, key)
+   Logger.info("TUS ETS LOOKUP: #{inspect({key, rs})}")
    found = (List.first(rs)) || {nil, nil}
    {:reply, elem(found, 1), state}
  end
@@ -61,6 +62,7 @@ defmodule ExTus.UploadCache do
 
  def handle_cast({:update, item}, state) do
    item = Map.delete(item, :__struct__)
+   Logger.info("TUS ETS UPDATE: #{inspect({item, state})}")
    :ets.insert(:upload_cache, {item.identifier, item})
    {:noreply, state}
  end
