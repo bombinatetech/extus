@@ -12,15 +12,6 @@ config :extus, :s3,
   virtual_host: false,
   chunk_size: 5 * 1024 * 1024
 
-config :ex_aws,
-  access_key_id:  "<ACCESS KEY>",
-  secret_access_key: "<SECRET KEY>",
-  s3: [region: "ap-southeast-1"],
-  s3_url: "s3-ap-southeast-1.amazonaws.com",
-  host: "s3.amazonaws.com",
-  scheme: "http://",
-  debug_requests: true
-
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,
