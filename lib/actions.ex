@@ -142,7 +142,7 @@ defmodule ExTus.Actions do
         |> resp(204, "")
 
       {:error, err} ->
-        Logger.warn inspect err
+        Logger.error("ERROR IN TUS STORAGE APPEND DATA: #{inspect({err})}")
         conn
         |> Utils.set_base_resp
         |> resp(404, "")
@@ -165,6 +165,7 @@ defmodule ExTus.Actions do
          |> Base.decode64!
 
        {:ok, {identifier, filename}} = storage().initiate_file(file_name)
+       Logger.info("TUS STORAGE FILE INITIATED: #{inspect({identifier, filename})}")
 
        info = %UploadInfo{
          identifier: identifier,
